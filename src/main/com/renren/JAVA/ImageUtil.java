@@ -31,6 +31,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 /**
+ * TODO 多线程开发！HttpClient的多线程
  * Created by shengwen.gan on 2018/8/2.
  * desc:
  */
