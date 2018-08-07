@@ -32,7 +32,9 @@ public class PoiRead implements Runnable {
 	public void run() {
 		try {
 //			Long startTime = System.currentTimeMillis();
+
 			picInfos.addAll(ImageUtil.readSheet(this.sheet, this.start, this.end));
+//			picInfos.addAll(ImageUtil.readErrorSheet(this.sheet, this.start, this.end));
 //			Long end = System.currentTimeMillis();
 //			System.out.println(Thread.currentThread().getName() + "耗时：" + (end-startTime) + " ms！ Current Time : " + System.currentTimeMillis());
 		} catch (Exception e) {

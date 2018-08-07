@@ -4,7 +4,10 @@ import jxl.Sheet;
 import jxl.write.WritableSheet;
 import jxl.write.WritableWorkbook;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.params.HttpParams;
+import org.apache.http.impl.client.CloseableHttpClient;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -38,7 +41,6 @@ public class PoiWrite implements Runnable {
 	@Override
 	public void run() {
 		try {
-			System.out.println(Thread.currentThread().getName() + " " + this.start + " " + this.end);
 			ImageUtil.writeExcel( this.writableWorkbook, this.httpClient, this.picInfos, this.start, this.end, sheets);
 		} catch (Exception e) {
 

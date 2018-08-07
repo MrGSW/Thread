@@ -9,11 +9,23 @@ import jxl.write.WritableWorkbook;
 import jxl.write.WriteException;
 import jxl.write.biff.RowsExceededException;
 import org.apache.commons.httpclient.HttpClient;
+import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethod;
+import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.params.HttpConnectionManagerParams;
+import org.apache.commons.httpclient.params.HttpParams;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 
 import java.io.*;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -24,11 +36,13 @@ import java.util.concurrent.Executors;
  */
 public class ImageUtil {
 
-	public static Map<String, Double> cache = new HashMap<>();
+	public static final ConcurrentHashMap<String, Double> cache = new ConcurrentHashMap<>();
+//	public static final List<PicInfo> picInfos =Collections.synchronizedList(new ArrayList<PicInfo>());
 	private static final String WRITE_FILE_NAME = "D:\\zhuomian\\picInfo.xls";
 	private static final String WRITE_FILE_TEMPLATE = "D:\\zhuomian\\template.xls";
+	private static final MultiThreadedHttpConnectionManager cm = new MultiThreadedHttpConnectionManager();
 	private static final int THREAD_NUMBER = 8;
-	private static final int WRITE_THREAD_NUMBER = 10;
+	private static final int WRITE_THREAD_NUMBER = 100;
 	private static volatile int rowCountOne = 1;
 	private static volatile int rowCountTwo = 1;
 	private static volatile int rowCountThree = 1;
@@ -41,6 +55,12 @@ public class ImageUtil {
 	static {
 		try {
 			book = Workbook.getWorkbook(new File(WRITE_FILE_TEMPLATE));
+			HttpConnectionManagerParams params = new HttpConnectionManagerParams();
+			params.setConnectionTimeout(1000);
+			params.setSoTimeout(2000);
+			params.setMaxTotalConnections(500);
+			params.setDefaultMaxConnectionsPerHost(50);
+			cm.setParams(params);
 		} catch (IOException e) {
 			e.printStackTrace();
 		} catch (BiffException e) {
@@ -53,18 +73,36 @@ public class ImageUtil {
 		try {
 			httpClient.executeMethod(method);
 			if (method.getStatusCode() != 200) {
-				System.out.println("method's statusCode not success!");
-				return -1;
+				return -method.getStatusCode();
 			}
 			double imageSize = Double.valueOf(method.getResponseHeader("Content-Length").getValue()) / (1024.0*1024.0);
 			return (double) Math.round(imageSize * 10000) / 10000;
 
+		} catch (HttpException e) {
+			System.out.println("HttpException! : ");
+			e.printStackTrace();
+			return -2;
 		} catch (IOException e) {
-			System.out.println("getImageSize error!" + urlStr);
-			return -1;
+			System.out.println("IOException!");
+			return -3;
 		} finally {
 			method.releaseConnection();
 		}
+	}
+
+	public static List<PicInfo> readErrorSheet(Sheet sheet, int start, int end) {
+		List<PicInfo> picInfos = new ArrayList<>();
+		for (int i = start; i < end; i++) {
+			String tableName = sheet.getCell(0, 1).getContents(); //获取表格名字
+			if (tableName == null || tableName.equals("")) {
+				continue;
+			}
+			String picUrl = sheet.getCell(3, i).getContents().replace("http:////", "https://");
+			String id = sheet.getCell(1, i).getContents();
+			String fieldName = sheet.getCell(2, i).getContents();
+			picInfos.add(new PicInfo(id, tableName, fieldName, picUrl));
+		}
+		return picInfos;
 	}
 
 	public static List<PicInfo> readSheet(Sheet sheet, int start, int end) {
@@ -78,7 +116,7 @@ public class ImageUtil {
 				for (int k = 2; k < sheet.getColumns(); k++) {
 					String fieldId = sheet.getCell(1, j).getContents();
 					String picUrls = sheet.getCell(k, j).getContents();
-					if (picUrls == null || picUrls.trim().equals("")) {
+					if (picUrls == null || picUrls.trim().equals("") || picUrls.equals("-")) {
 						continue;
 					}
 					List<String> picUrlList = transferPicUrl(sheet.getCell(k, j).getContents());
@@ -91,14 +129,24 @@ public class ImageUtil {
 	}
 
 	public static List<String> transferPicUrl(String picUrls) {
-		String[] picUrlArray = picUrls.split(" ");
+		String[] picUrlArray = null;
+		if (picUrls.contains("|")) {
+			picUrlArray = picUrls.split("\\|");
+		} else {
+			picUrlArray = picUrls.split(" ");
+		}
 		List<String> picUrlList = new ArrayList<>();
 		for (int i = 0; i < picUrlArray.length; i++) {
 			String picUrl = picUrlArray[i];
 			if (!picUrl.startsWith("http://") && !picUrl.startsWith("https://")) {
-				picUrlList.add("http://" + picUrl);
-			} else {
-				picUrlList.add(picUrl.replace("https://", "http://"));
+				if (picUrl.startsWith("//")) {
+					picUrlList.add("https:" + picUrl);
+				} else {
+					picUrlList.add("https://" + picUrl);
+				}
+			}
+			if (picUrl.startsWith("http://")) {
+				picUrlList.add(picUrl.replace("http://", "https://"));
 			}
 		}
 		return picUrlList;
@@ -119,20 +167,23 @@ public class ImageUtil {
 	public static void multiThreadReadExcel(File file) {
 
 		Long startTime = System.currentTimeMillis();
-		ExecutorService service = Executors.newCachedThreadPool();
 		try {
 			InputStream inputStream = new FileInputStream(file.getAbsolutePath());
 			Workbook workbook = Workbook.getWorkbook(inputStream);
-			CountDownLatch latch = new CountDownLatch(THREAD_NUMBER);
-			Sheet sheet = workbook.getSheet(0);
-			int length = getLength(sheet.getRows(), THREAD_NUMBER);
-			int start = 1;
-			for (int i = 0; i < THREAD_NUMBER; i++) {
-				service.submit(new PoiRead(latch, sheet, start, getEndIndex(start, length, sheet.getRows())));
-				start += length;
+			System.out.println(workbook.getNumberOfSheets());
+			for (int index = 0; index < workbook.getNumberOfSheets(); index++) {
+				ExecutorService service = Executors.newCachedThreadPool();
+				CountDownLatch latch = new CountDownLatch(THREAD_NUMBER);
+				Sheet sheet = workbook.getSheet(index);
+				int length = getLength(sheet.getRows(), THREAD_NUMBER);
+				int start = 1;
+				for (int i = 0; i < THREAD_NUMBER; i++) {
+					service.submit(new PoiRead(latch, sheet, start, getEndIndex(start, length, sheet.getRows())));
+					start += length;
+				}
+				latch.await();
+				service.shutdown();
 			}
-			latch.await();
-			service.shutdown();
 			Long end = System.currentTimeMillis();
 			System.out.println("多线程读耗时：" + (end-startTime) + "ms!");
 		} catch (FileNotFoundException e) {
@@ -163,11 +214,24 @@ public class ImageUtil {
 		try {
 			for (int i = start; i < end; i++) {
 				PicInfo picInfo = picInfos.get(i);
-				double picSize = getPicSize(client, picInfo.getPicUrl());
+				if (picInfo.getPicUrl().equals("-") || picInfo.getPicUrl() == null || picInfo.getPicUrl().trim().equals("")) {
+					continue;
+				}
+
+				double picSize = 0.0;
+				if (!picInfo.getPicUrl().contains(".png") && !picInfo.getPicUrl().contains(".jpeg")
+								&& !picInfo.getPicUrl().contains("jpg") && !picInfo.getPicUrl().contains("ico")
+								&&  !picInfo.getPicUrl().contains("gif")) {
+					picSize = -404;
+				} else {
+					picSize = getPicSize(client, picInfo.getPicUrl());
+				}
 				picInfo.setPicNumber(picSize);
 				System.out.println(picInfo + " Counts : " + ++counts);
-				if (picSize < 0.0) {
-					writeExcel( picInfo, sheets.get(5), rowCountSix++);
+				if (picSize < -200.0) {
+					writeExcel( picInfo, sheets.get(8), rowCountFour++);
+				} else if (picSize < 0.0) {
+					writeExcel( picInfo, sheets.get(7), rowCountSix++);
 				} else if (picSize < 0.5) {
 					writeExcel( picInfo, sheets.get(0), rowCountOne++);
 				} else if (picSize < 1.0) {
@@ -176,8 +240,12 @@ public class ImageUtil {
 					writeExcel( picInfo, sheets.get(2), rowCountThree++);
 				} else if (picSize < 2.0) {
 					writeExcel( picInfo, sheets.get(3), rowCountFour++);
+				} else if (picSize < 5.0) {
+					writeExcel( picInfo, sheets.get(4), rowCountFour++);
+				} else if (picSize < 10.0) {
+					writeExcel( picInfo, sheets.get(5), rowCountFour++);
 				} else {
-					writeExcel( picInfo, sheets.get(4), rowCountFive++);
+					writeExcel( picInfo, sheets.get(6), rowCountFive++);
 				}
 			}
 		} finally {
@@ -192,12 +260,11 @@ public class ImageUtil {
 		try {
 			File file = new File(WRITE_FILE_NAME);
 			WritableWorkbook writableWorkbook = Workbook.createWorkbook(file, book);
-			System.out.println("Sheet : " + writableWorkbook.getNumberOfSheets() + " PicInfoNumber : " + picInfos.size());
 			List<WritableSheet> sheets = Arrays.asList(writableWorkbook.getSheets());
 			int length = getLength(picInfos.size(), WRITE_THREAD_NUMBER);
 			int start = 0;
 			for (int i = 0; i < WRITE_THREAD_NUMBER; i++) {
-				executorService.submit(new PoiWrite(client,writableWorkbook, picInfos, latch, start, getEndIndex(start, length, picInfos.size()), sheets));
+				executorService.submit(new PoiWrite(new HttpClient(cm),writableWorkbook, picInfos, latch, start, getEndIndex(start, length, picInfos.size()), sheets));
 				start += length;
 			}
 			latch.await();
@@ -216,7 +283,7 @@ public class ImageUtil {
 		System.out.println("写入耗时：" + (endTime - startTime) + "ms!");
 	}
 
-	public static void writeExcel(PicInfo picInfo, WritableSheet sheet, int lastRow) {
+	public synchronized static void writeExcel(PicInfo picInfo, WritableSheet sheet, int lastRow) {
 		try {
 			sheet.addCell(new Label(0, lastRow, picInfo.getTableName()));
 			sheet.addCell(new Label(1, lastRow, picInfo.getId()));
@@ -227,6 +294,7 @@ public class ImageUtil {
 			System.out.println("写入异常" + picInfo);
 		}
 	}
+/*
 
 	public static void writeExcel(HttpClient httpClient, File file, Map<String, List<List<String>>> numbersMap) {
 		try {
@@ -270,14 +338,16 @@ public class ImageUtil {
 			System.out.println("出错了4");;
 		}
 	}
+*/
 
 	public static void main(String[] args) {
+		System.out.println(cache.size());
 		HttpClient httpClient = new HttpClient();
-		File file = new File("D:\\zhuomian\\tableInfo\\about_info.xls");
-//		Map<String, List<List<String>>> imagesMap = readExcel(file);
+		File file = new File("D:\\zhuomian\\tableInfo\\all.xls");
+//		File file = new File("D:\\zhuomian\\error.xls");
 		multiThreadReadExcel(file);
+		System.out.println(PoiRead.picInfos.size());
 		multiThreadWriteExcel(httpClient, PoiRead.picInfos);
-//		writeExcel(httpClient, file, imagesMap);
 	}
 
 }
