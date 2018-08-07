@@ -40,7 +40,7 @@ public class GetSqlAuto {
 
 	public static void main(String[] args) {
 
-		Map<String, String> tables = readTxt("D:\\zhuomian\\notInIDX.txt");
+		Map<String, String> tables = readTxt("D:\\zhuomian\\sql.txt");
 		Map<String, String> one = readTxt("D:\\zhuomian\\notInIDXMore.txt");
 
 		for (String key : one.keySet()) {
@@ -50,9 +50,9 @@ public class GetSqlAuto {
 		}
 
 //		List<String> names = readTxt1("D:\\zhuomian\\sql1.txt");
-
-		System.out.println(tables.size());
-		System.out.println(one.size());
+//
+//		System.out.println(tables.size());
+//		System.out.println(one.size());
 
 //		List<String> creatorId = new ArrayList<>();
 //		StringBuffer stringBuffer = new StringBuffer("select uid from website_info where parent_id = 0 and uid not in (");

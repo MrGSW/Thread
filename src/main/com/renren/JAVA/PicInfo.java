@@ -7,6 +7,7 @@ package renren.JAVA;
 public class PicInfo {
 
 	private String id;
+	private String idFieldName;
 	private String tableName;
 	private String fieldName;
 	private String picUrl;
@@ -17,6 +18,14 @@ public class PicInfo {
 	public PicInfo(String tableName, String fieldName) {
 		this.tableName = tableName;
 		this.fieldName = fieldName;
+	}
+
+	public PicInfo(String tableName, String idFieldName, String id, String fieldName, String picUrl) {
+		this.id = id;
+		this.idFieldName = idFieldName;
+		this.tableName = tableName;
+		this.fieldName = fieldName;
+		this.picUrl = picUrl;
 	}
 
 	public PicInfo(String id, String tableName, String fieldName, String picUrl) {
