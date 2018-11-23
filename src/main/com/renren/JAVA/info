@@ -1,56 +1,58 @@
-select 'hineighborhood2site' , id ,  banners , back_pic  from hineighborhood2site where  banners is not null  or  back_pic is not null  limit 0, 2500;
-select 'agent' , id ,  image , photos  from agent where  image is not null  or  photos is not null  limit 0, 2500;
-select 'website_media' , id ,  pic_url  from website_media where  pic_url is not null  limit 0, 2500;
-select 'company_info' , id ,  logo_url  from company_info where  logo_url is not null  limit 0, 2500;
-select 'office' , id ,  picture  from office where  picture is not null  limit 0, 2500;
-select 'sold_listing_info' , id ,  listing_pictures  from sold_listing_info where  listing_pictures is not null  limit 0, 2500;
-select 'sys_arg' , id ,  value  from sys_arg where  value is not null  limit 0, 2500;
-select 'mls_org_info' , id ,  logo , samll_logo  from mls_org_info where  logo is not null  or  samll_logo is not null  limit 0, 2500;
-select 'search_listing_snapshot' , id ,  image  from search_listing_snapshot where  image is not null  limit 0, 2500;
-select 'website_instruction' , id ,  background_picture_url  from website_instruction where  background_picture_url is not null  limit 0, 2500;
-select 'customized_agent_info' , id ,  head_url  from customized_agent_info where  head_url is not null  limit 0, 2500;
-select 'wp_autopost_watermark' , id ,  upload_image , upload_image_url  from wp_autopost_watermark where  upload_image is not null  or  upload_image_url is not null  limit 0, 2500;
-select 'listing_info_full_copy' , id ,  listing_pictures  from listing_info_full_copy where  listing_pictures is not null  limit 0, 2500;
-select 'neighborhood2site' , id ,  banners  from neighborhood2site where  banners is not null  limit 0, 2500;
-select 'city_location' , id ,  banners  from city_location where  banners is not null  limit 0, 2500;
-select 'vendors' , id ,  image_url  from vendors where  image_url is not null  limit 0, 2500;
-select 'blog_info_cn' , id ,  preview_picture  from blog_info_cn where  preview_picture is not null  limit 0, 2500;
-select 'blog_info' , id ,  preview_picture  from blog_info where  preview_picture is not null  limit 0, 2500;
-select 'evaluation_config' , id ,  pic_url  from evaluation_config where  pic_url is not null  limit 0, 2500;
-select 'service_provider' , id ,  top_url , top_right_url , footer_left_url , footer_right_url  from service_provider where  top_url is not null  or  top_right_url is not null  or  footer_left_url is not null  or  footer_right_url is not null  limit 0, 2500;
-select 'listing_info_cn' , id ,  pictures  from listing_info_cn where  pictures is not null  limit 0, 2500;
-select 'info_collect' , id ,  agent_image  from info_collect where  agent_image is not null  limit 0, 2500;
-select 'home_mortgage' , id ,  banner , bottom_logo  from home_mortgage where  banner is not null  or  bottom_logo is not null  limit 0, 2500;
-select 'website_contact' , id ,  background_picture_url  from website_contact where  background_picture_url is not null  limit 0, 2500;
-select 'website_template_info' , id ,  url  from website_template_info where  url is not null  limit 0, 2500;
-select 'listing_info' , id ,  listing_pictures  from listing_info where  listing_pictures is not null  limit 0, 2500;
-select 'cms_image' , id ,  url  from cms_image where  url is not null  limit 0, 2500;
-select 'hjcity2site' , id ,  back_pic  from hjcity2site where  back_pic is not null  limit 0, 2500;
-select 'home_info_full' , id ,  pictures , floorplan_pictures  from home_info_full where  pictures is not null  or  floorplan_pictures is not null  limit 0, 2500;
-select 'listing_info_full' , id ,  listing_pictures  from listing_info_full where  listing_pictures is not null  limit 0, 2500;
-select 'introduction_info' , id ,  preview_picture  from introduction_info where  preview_picture is not null  limit 0, 2500;
-select 'website_info' , id ,  logo_url , bottom_logo_url , introduction_picture , background_picture , pre_video_picture , title_logo  from website_info where  logo_url is not null  or  bottom_logo_url is not null  or  introduction_picture is not null  or  background_picture is not null  or  pre_video_picture is not null  or  title_logo is not null  limit 0, 2500;
-select 'agent_team_member' , id ,  head_url  from agent_team_member where  head_url is not null  limit 0, 2500;
-select 'agent_team' , id ,  banner  from agent_team where  banner is not null  limit 0, 2500;
-select 'agent_info' , id ,  head_url , back_head_url , photos  from agent_info where  head_url is not null  or  back_head_url is not null  or  photos is not null  limit 0, 2500;
-select 'client' , id ,  image  from client where  image is not null  limit 0, 2500;
-select 'custom_module' , id ,  pre_pic  from custom_module where  pre_pic is not null  limit 0, 2500;
-select 'agent_team_info' , id ,  team_picture  from agent_team_info where  team_picture is not null  limit 0, 2500;
-select 'about_info' , id ,  head_pic_url  from about_info where  head_pic_url is not null  limit 0, 2500;
-select 'mls_org_info_old' , id ,  logo , samll_logo  from mls_org_info_old where  logo is not null  or  samll_logo is not null  limit 0, 2500;
-select 'newhome_info_full_test' , id ,  newhome_pictures , floorplan_pictures  from newhome_info_full_test where  newhome_pictures is not null  or  floorplan_pictures is not null  limit 0, 2500;
-select 'broker_area' , id ,  image  from broker_area where  image is not null  limit 0, 2500;
-select 'agent_team_leader' , id ,  head_url  from agent_team_leader where  head_url is not null  limit 0, 2500;
-select 'lang_specified_about' , id ,  banner_pic  from lang_specified_about where  banner_pic is not null  limit 0, 2500;
-select 'banner' , id ,  single_picture , multi_pictures  from banner where  single_picture is not null  or  multi_pictures is not null  limit 0, 2500;
-select 'comment_info' , id ,  head_url  from comment_info where  head_url is not null  limit 0, 2500;
-select 'listing_promotion' , id ,  home_background_url , video_tour_background_url , features_background_url , contact_back_ground_url  from listing_promotion where  home_background_url is not null  or  video_tour_background_url is not null  or  features_background_url is not null  or  contact_back_ground_url is not null  limit 0, 2500;
-select 'customized_office' , id ,  image  from customized_office where  image is not null  limit 0, 2500;
-select 'partner' , id ,  logo_url  from partner where  logo_url is not null  limit 0, 2500;
-select 'wp_links' , id ,  link_image  from wp_links where  link_image is not null  limit 0, 2500;
-select 'replace_image' , id ,  old_url , new_url  from replace_image where  old_url is not null  or  new_url is not null  limit 0, 2500;
-select 'cms_image_0503' , id ,  url  from cms_image_0503 where  url is not null  limit 0, 2500;
-select 'customized_agent' , id ,  image  from customized_agent where  image is not null  limit 0, 2500;
-select 'lising_promotion_team_member' , id ,  head_url  from lising_promotion_team_member where  head_url is not null  limit 0, 2500;
-select 'comment_info_cn' , id ,  head_url  from comment_info_cn where  head_url is not null  limit 0, 2500;
-select 'communities' , id ,  background_picture_url  from communities where  background_picture_url is not null  limit 0, 2500;
+select 'agent' ,'field:site_id', site_id,image,photos from agent where site_id not in (select id from website_info where dead_line < 1533739502000) and (image is not null and image <> '' ) or (photos is not null and photos <> '' ) limit 0, 8000;
+select 'website_media' ,'field:site_id', site_id,pic_url from website_media where site_id not in (select id from website_info where dead_line < 1533739502000) and (pic_url is not null and pic_url <> '' ) limit 0, 8000;
+select 'company_info' ,'field:site_id', site_id,logo_url from company_info where site_id not in (select id from website_info where dead_line < 1533739502000) and (logo_url is not null and logo_url <> '' ) limit 0, 8000;
+select 'office' ,'field:site_id', site_id,picture from office where site_id not in (select id from website_info where dead_line < 1533739502000) and (picture is not null and picture <> '' ) limit 0, 8000;
+select 'sold_listing_info' ,'field:site_id', site_id,listing_pictures from sold_listing_info where site_id not in (select id from website_info where dead_line < 1533739502000) and (listing_pictures is not null and listing_pictures <> '' ) limit 0, 8000;
+select 'sys_arg' ,'field:site_id', site_id,value from sys_arg where site_id not in (select id from website_info where dead_line < 1533739502000) and (value is not null and value <> '' ) limit 0, 8000;
+select 'mls_org_info' ,'field:id', id,logo,small_logo from mls_org_info where (logo is not null and logo <> '' ) or (small_logo is not null and small_logo <> '' ) limit 0, 8000;
+select 'search_listing_snapshot' ,'field:id', id,image from search_listing_snapshot where (image is not null and image <> '' ) limit 0, 8000;
+select 'website_instruction' ,'field:site_id', site_id,background_picture_url from website_instruction where site_id not in (select id from website_info where dead_line < 1533739502000) and (background_picture_url is not null and background_picture_url <> '' ) limit 0, 8000;
+select 'customized_agent_info' ,'field:site_id', site_id,head_url from customized_agent_info where site_id not in (select id from website_info where dead_line < 1533739502000) and (head_url is not null and head_url <> '' ) limit 0, 8000;
+
+
+select 'neighborhood2site' ,'field:site_id', site_id,banners from neighborhood2site where site_id not in (select id from website_info where dead_line < 1533739502000) and (banners is not null and banners <> '' ) limit 0, 8000;
+
+select 'vendors' ,'field:id', id,image_url from vendors where (image_url is not null and image_url <> '' ) limit 0, 8000;
+select 'blog_info_cn' ,'field:id', id,preview_pictrue from blog_info_cn where (preview_pictrue is not null and preview_pictrue <> '' ) limit 0, 8000;
+select 'blog_info' ,'field:id', id,preview_pictrue from blog_info where (preview_pictrue is not null and preview_pictrue <> '' ) limit 0, 8000;
+select 'evaluation_config' ,'field:id', id,pic_url from evaluation_config where   (pic_url is not null and pic_url <> '' ) limit 0, 8000;
+select 'service_provider' ,'field:site_id', site_id,top_url,top_right_url,footer_left_url,footer_right_url from service_provider where site_id not in (select id from website_info where dead_line < 1533739502000) and (top_url is not null and top_url <> '' ) or (top_right_url is not null and top_right_url <> '' ) or (footer_left_url is not null and footer_left_url <> '' ) or (footer_right_url is not null and footer_right_url <> '' ) limit 0, 8000;
+select 'listing_info_cn' ,'field:id', id,pictures from listing_info_cn where (pictures is not null and pictures <> '' ) limit 0, 8000;
+select 'info_collect' ,'field:site_id', site_id,agent_image from info_collect where site_id not in (select id from website_info where dead_line < 1533739502000) and (agent_image is not null and agent_image <> '' ) limit 0, 8000;
+select 'home_mortgage' ,'field:site_id', site_id,banner,bottom_logo from home_mortgage where site_id not in (select id from website_info where dead_line < 1533739502000) and (banner is not null and banner <> '' ) or (bottom_logo is not null and bottom_logo <> '' ) limit 0, 8000;
+select 'website_contact' ,'field:site_id', site_id,background_picture_url from website_contact where site_id not in (select id from website_info where dead_line < 1533739502000) and (background_picture_url is not null and background_picture_url <> '' ) limit 0, 8000;
+select 'hjneighborhood2site' ,'field:site_id', site_id,banners,back_pic from hjneighborhood2site where site_id not in (select id from website_info where dead_line < 1533739502000) and (banners is not null and banners <> '' ) or (back_pic is not null and back_pic <> '' ) limit 0, 8000;
+select 'website_template_info' ,'field:id', id,url from website_template_info where  (url is not null and url <> '' ) limit 0, 8000;
+select 'listing_info' ,'field:id', id,listing_pictures from listing_info where  (listing_pictures is not null and listing_pictures <> '' ) limit 0, 8000;
+select 'cms_image' ,'field:id', id,url from cms_image where  (url is not null and url <> '' ) limit 0, 8000;
+select 'hjcity2site' ,'field:site_id', site_id,back_pic from hjcity2site where site_id not in (select id from website_info where dead_line < 1533739502000) and (back_pic is not null and back_pic <> '' ) limit 0, 8000;
+
+
+select 'introduction_info' ,'field:site_id', site_id,preview_picture from introduction_info where site_id not in (select id from website_info where dead_line < 1533739502000) and (preview_picture is not null and preview_picture <> '' ) limit 0, 8000;
+select 'website_info' ,'field:id', id,logo_url,bottom_logo_url,introduction_picture,background_picture,pre_video_picture,title_logo from website_info where dead_line > 1533739502000 and (logo_url is not null and logo_url <> '' ) or (bottom_logo_url is not null and bottom_logo_url <> '' ) or (introduction_picture is not null and introduction_picture <> '' ) or (background_picture is not null and background_picture <> '' ) or (pre_video_picture is not null and pre_video_picture <> '' ) or (title_logo is not null and title_logo <> '' ) limit 0, 8000;
+select 'agent_team_member' ,'field:id', id,head_url from agent_team_member where (head_url is not null and head_url <> '' ) limit 0, 8000;
+
+select 'agent_team' ,wi.domain_name,  agt.banner from agent_team agt inner join website_info wi on agt.site_id = wi.id and wi.dead_line > (unix_timestamp() * 1000) and (agt.banner is not null and agt.banner <> '' ) limit 0, 8000;
+select 'agent_info' ,wi.domain_name, ai.head_url,ai.back_head_url,ai.photos from agent_info ai inner join website_info wi on ai.site_id = wi.id and wi.dead_line > (unix_timestamp()*1000) and ((ai.head_url is not null and ai.head_url <> '' ) or (ai.back_head_url is not null and ai.back_head_url <> '' ) or (ai.photos is not null and ai.photos <> '' ) ) limit 0, 8000;
+
+select 'client' ,'field:id', id,image from client where  (image is not null and image <> '' ) limit 0, 8000;
+select 'custom_module' ,'field:id', id,pre_pic from custom_module where (pre_pic is not null and pre_pic <> '' ) limit 0, 8000;
+select 'agent_team_info' ,'field:team_id', team_id,team_picture from agent_team_info where (team_picture is not null and team_picture <> '' ) limit 0, 8000;te_info where dead_line < 1533739502000) and (team_picture is not null and team_picture <> '' ) limit 0, 8000;
+select 'about_info' ,'field:site_id', site_id,head_pic_url from about_info where site_id not in (select id from website_info where dead_line < 1533739502000) and (head_pic_url is not null and head_pic_url <> '' ) limit 0, 8000;
+
+
+select 'broker_area' ,'field:site_id', site_id,image from broker_area where site_id not in (select id from website_info where dead_line < 1533739502000) and (image is not null and image <> '' ) limit 0, 8000;
+select 'agent_team_leader' ,'field:id', id,head_url from agent_team_leader where (head_url is not null and head_url <> '' ) limit 0, 8000;
+select 'lang_specified_about' ,'field:site_id', site_id,banner_pic from lang_specified_about where site_id not in (select id from website_info where dead_line < 1533739502000) and (banner_pic is not null and banner_pic <> '' ) limit 0, 8000;
+select 'banner' ,'field:site_id', site_id,single_picture,multi_pictures from banner where site_id not in (select id from website_info where dead_line < 1533739502000) and (single_picture is not null and single_picture <> '' ) or (multi_pictures is not null and multi_pictures <> '' ) limit 0, 8000;
+select 'comment_info' ,'field:site_id', site_id,head_url from comment_info where site_id not in (select id from website_info where dead_line < 1533739502000) and (head_url is not null and head_url <> '' ) limit 0, 8000;
+select 'listing_promotion' ,'field:site_id', site_id,home_background_url,video_tour_background_url,features_background_url,contact_back_ground_url from listing_promotion where site_id not in (select id from website_info where dead_line < 1533739502000) and (home_background_url is not null and home_background_url <> '' ) or (video_tour_background_url is not null and video_tour_background_url <> '' ) or (features_background_url is not null and features_background_url <> '' ) or (contact_back_ground_url is not null and contact_back_ground_url <> '' ) limit 0, 8000;
+select 'customized_office' ,'field:site_id', site_id,image from customized_office where site_id not in (select id from website_info where dead_line < 1533739502000) and (image is not null and image <> '' ) limit 0, 8000;
+select 'partner' ,'field:site_id', site_id,logo_url from partner where site_id not in (select id from website_info where dead_line < 1533739502000) and (logo_url is not null and logo_url <> '' ) limit 0, 8000;
+select 'wp_links' ,'field:site_id', site_id,link_image from wp_links where site_id not in (select id from website_info where dead_line < 1533739502000) and (link_image is not null and link_image <> '' ) limit 0, 8000;
+
+
+select 'customized_agent' ,'field:site_id', site_id,image from customized_agent where site_id not in (select id from website_info where dead_line < 1533739502000) and (image is not null and image <> '' ) limit 0, 8000;
+
+select 'comment_info_cn' ,'field:id', id,head_url from comment_info_cn where (head_url is not null and head_url <> '' ) limit 0, 8000;
+select 'communities' ,'field:site_id', site_id,background_picture_url from communities where site_id not in (select id from website_info where dead_line < 1533739502000) and (background_picture_url is not null and background_picture_url <> '' ) limit 0, 8000;
